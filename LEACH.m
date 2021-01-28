@@ -10,7 +10,7 @@ tic;
 
 %% Create sensor nodes, Set Parameters and Create Energy Model 
 %%%%%%%%%%%%%%%%%%%%%%%%% Initial Parameters %%%%%%%%%%%%%%%%%%%%%%%
-n=50;                                  %Number of Nodes in the field
+n=100;                                  %Number of Nodes in the field
 [Area,Model]=setParameters(n);     		%Set Parameters Sensors and Network
 
 %%%%%%%%%%%%%%%%%%%%%%%%% configuration Sensors %%%%%%%%%%%%%%%%%%%%
@@ -80,7 +80,7 @@ for r=1:1:Model.rmax
     RRP(r+1)=rrp;  
     SDP(r+1)=sdp;
     RDP(r+1)=rdp;   
-    pause(0.001)    %pause simulation
+    pause(1)    %pause simulation
     hold off;       %clear figure
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
