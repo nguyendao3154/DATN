@@ -11,6 +11,6 @@ function CreateRandomSen(Model,Area)
         X(i)=rand()*x;
         Y(i)=rand()*y;
     end
-    %save ('Locations','X','Y');
+    save ('Locations','X','Y');
 
 end
