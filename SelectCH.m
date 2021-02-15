@@ -36,7 +36,7 @@ function [CH,Sensors]=SelectCH(Sensors,Model,r)
             temp_rand=rand;     
             if (Sensors(i).G<=0)            
                 %Election of Cluster Heads  
-                if(i == 3 )                   
+                if(i == 2  )                   
                     countCHs=countCHs+1; 
                     CH(countCHs).id=i; %#ok                
                     Sensors(i).type='C';

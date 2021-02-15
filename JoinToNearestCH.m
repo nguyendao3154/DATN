@@ -1,7 +1,7 @@
 function Sensors=JoinToNearestCH(Sensors,Model,TotalCH)
-    %% Developed by Amin Nazari 
-% 	aminnazari91@gmail.com 
-%	0918 546 2272
+%% Origin file: Amin Nazari 
+%  Developed by: Nguyen Dao  -   DHBKHN
+
 n=Model.n;
 m=length(TotalCH);
 if(m>0)

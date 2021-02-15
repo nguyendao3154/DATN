@@ -1,6 +1,7 @@
 %% Developed by Amin Nazari 
 % 	aminnazari91@gmail.com 
 %	0918 546 2272
+%   Developed by: Nguyen Dao - DHBKHN
 
 clc;
 clear;
@@ -39,6 +40,16 @@ Sum_DEAD=zeros(1,Model.rmax);
 CLUSTERHS=zeros(1,Model.rmax);
 AllSensorEnergy=zeros(1,Model.rmax);
 
+%%%%%%%%%%%%%%%%%%%%%%% Parameters initialization for GWO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Function_name='F18'; % Name of the test function that can be from F1 to F23 (Table 1,2,3 in the paper)
+
+Max_iteration=500; % Maximum numbef of iterations
+
+% Load details of the selected benchmark function
+[lb,ub,dim,fobj]=Get_Functions_details(Function_name);
+
+[Alpha_score,Alpha_pos,GWO_cg_curve]=GWO(n,Max_iteration,lb,ub,dim,fobj,Sensors);
 %%%%%%%%%%%%%%%%%%%%%%%% Start Simulation %%%%%%%%%%%%%%%%%%%%%%%%%
 global srp rrp sdp rdp
 srp=0;          %counter number of sent routing packets
@@ -85,7 +96,7 @@ for r=1:1:Model.rmax
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     Sensors=resetSensors(Sensors,Model);
-    %allow to sensor to become cluster-head. LEACH Algorithm  
+    %allow to sensor to become cluster-head. LEACH Algorithm    
     AroundClear=10;
     if(mod(r,AroundClear)==0) 
         for i=1:1:n
@@ -97,11 +108,11 @@ for r=1:1:Model.rmax
     deadNum=ploter(Sensors,Model);
     
     %Save r'th period When the first node dies
-    if (deadNum>=1)      
+    if (deadNum>=1)
         if(flag_first_dead==0)
             first_dead=r;
             flag_first_dead=1;
-        end  
+        end
     end
     
 %%%%%%%%%%%%%%%%%%%%%% cluster head election %%%%%%%%%%%%%%%%%%%
