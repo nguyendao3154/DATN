@@ -8,8 +8,8 @@ function CreateRandomSen(Model,Area)
     X=zeros(1,n);
     Y=X;
     for i=1:1:n
-        X(i)=rand()*x;
-        Y(i)=rand()*y;
+        X(i)=rand*Area.x;
+        Y(i)=rand*Area.y;
     end
     save ('Locations','X','Y');
 

@@ -2,6 +2,8 @@ function [Area,Model]=setParameters(n)
 %% Developed by Amin Nazari 
 % 	aminnazari91@gmail.com 
 %	0918 546 2272
+% Developed by Nguyen Dao - DHBKHN
+global Max_iter
 %%%%%%%%%%%%%%%%%%%%%%%%% Set Inital PARAMETERS %%%%%%%%%%%%%%%%%%%%%%%%
 %Field Dimensions - x and y maximum (in meters)
 Area.x=n;
@@ -47,6 +49,11 @@ NumPacket=10;
 
 %Redio Range
 RR=0.5*Area.x*sqrt(2);
+
+%Weight
+a1 = 0.2;
+a2 = 0.2;
+a3 = 0.2;
 %%%%%%%%%%%%%%%%%%%%%%%%% END OF PARAMETERS %%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%% Save in Model %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -66,5 +73,8 @@ Model.DpacketLen=DpacketLen;
 Model.HpacketLen=HpacketLen;
 Model.NumPacket=NumPacket;
 Model.RR=RR;
+Model.a1=a1;
+Model.a2=a2;
+Model.a3=a3;
 
 end
