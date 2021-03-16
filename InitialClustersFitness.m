@@ -2,7 +2,7 @@
 % Find intital Alpha, Beta, Delta
 
 function [Sensors, AlphaWolf, BetaWolf, DeltaWolf] = InitialClustersFitness(Sensors, Model, minToSink, maxToSink)
-
+    global CH_idx;
 for i=1:Model.n 
     %Formula 12
     if(Sensors(i).E > 0)
@@ -32,5 +32,6 @@ for i=1:Model.n
         end
 
     end
-
+    C(i) = Sensors(i).F1;
 end
+[B, CH_idx] = maxk(C,10);

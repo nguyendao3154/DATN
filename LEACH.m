@@ -8,14 +8,14 @@ clear;
 close all;
 warning off all;
 tic;
-global srp rrp sdp rdp r a Max_iter idx
+global srp rrp sdp rdp r a Max_iter CH_idx
 Max_iter=10; % Maximum numbef of iterations
 
 %% Create sensor nodes, Set Parameters and Create Energy Model 
 %%%%%%%%%%%%%%%%%%%%%%%%% Initial Parameters %%%%%%%%%%%%%%%%%%%%%%%
 n=100;                                  %Number of Nodes in the field
 ub = 100;
-lb = -100;
+lb = 1;
 [Area,Model]=setParameters(n);     		%Set Parameters Sensors and Network
 
 %%%%%%%%%%%%%%%%%%%%%%%%% configuration Sensors %%%%%%%%%%%%%%%%%%%%
@@ -70,15 +70,23 @@ RDP(1)=rdp;
 
 % Select initial cluster head
 [Sensors,AlphaWolf,BetaWolf,DeltaWolf] = InitialClustersFitness(Sensors, Model, minToSink, maxToSink);
-
- %Plot sensors
-ploter(Sensors,Model);                 
+           
 
 % Initialize GWO parameters
 [Positions,Alpha_pos,Beta_pos,Delta_pos,Prey_pos] =  InitialGWO(Sensors,AlphaWolf,BetaWolf,DeltaWolf,n,ub,lb);
-
-
-%% Main loop program
+pause(0.001)    %pause simulation
+hold off;       %clear figure
+% Selection Candidate Cluster Head Based on LEACH Set-up Phase
+[TotalCH,Sensors]=SelectCH(Sensors,Model); 
+%Sensors join to nearest CH 
+[TotalCH,Sensors]=JoinToNearestCH(Sensors,Model,TotalCH);
+%Reselect CH
+[TotalCH,Sensors]=ReSelectCH(Sensors,Model); 
+%Sensors join to nearest CH 
+[TotalCH,Sensors]=JoinToNearestCH(Sensors,Model,TotalCH);
+ %Plot sensors
+ploter(Sensors,Model);       
+% Main loop program
 for r=1:1:Model.rmax
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% Initialization %%%%%%%%%%%%%%%%%%%%%
@@ -118,11 +126,16 @@ for r=1:1:Model.rmax
             flag_first_dead=1;
         end
     end
-    [GWO_cg_curve,Sensors,minF2]=GWO(n,Max_iter,lb,ub,Sensors,Model,Prey_pos);
+    [Convergence_curve,Sensors,minF2,Alpha_pos,Beta_pos,Delta_pos,Prey_pos]=GWO(n,Max_iter,lb,ub,Sensors,Model);
 %%%%%%%%%%%%%%%%%%%%%% cluster head election %%%%%%%%%%%%%%%%%%%
     % Selection Candidate Cluster Head Based on LEACH Set-up Phase
-    [TotalCH,Sensors]=SelectCH(Sensors,Model,minF2); 
+    [TotalCH,Sensors]=SelectCH(Sensors,Model); 
     
+        %Sensors join to nearest CH 
+    Sensors=JoinToNearestCH(Sensors,Model,TotalCH);
+    
+%%%%%%%%%%%%%%%%%%%%%%% end of cluster head election phase %%%%%%
+ploter(Sensors,Model);                  %Plot sensorss
     %Broadcasting CHs to All Sensor that are in Radio Rage CH.
     for i=1:length(TotalCH)
         
@@ -133,11 +146,6 @@ for r=1:1:Model.rmax
             
     end 
     
-    %Sensors join to nearest CH 
-    Sensors=JoinToNearestCH(Sensors,Model,TotalCH);
-    
-%%%%%%%%%%%%%%%%%%%%%%% end of cluster head election phase %%%%%%
-ploter(Sensors,Model);                  %Plot sensors
     
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% steady-state phase %%%%%%%%%%%%%%%%%
@@ -222,7 +230,7 @@ ploter(Sensors,Model);                  %Plot sensors
        break;
        
    end
-  
+ 
 end % for r=0:1:rmax
 
 disp('End of Simulation');
@@ -231,5 +239,5 @@ disp('Create Report...')
 
 filename=sprintf('leach%d.mat',n);
 
-%% Save Report
-% save(filename);
+% Save Report
+save(filename);

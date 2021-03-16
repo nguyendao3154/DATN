@@ -22,12 +22,12 @@
 %     end 
 % end
 
-function [CH,Sensors]=SelectCH(Sensors,Model,minF2)
+function [CH,Sensors]=SelectCH(Sensors,Model)
    %  @file    GWO.m
 %  @author  Nguyen Dao DHBKHN.
 %  @version 1.0
 %  @date    Jan 28, 2021
-    global idx;
+    global CH_idx;
     CH=[];
     countCHs=0;
     n=Model.n;
@@ -39,10 +39,9 @@ function [CH,Sensors]=SelectCH(Sensors,Model,minF2)
                 %Election of Cluster Heads  
                 % if(i == minF2)    
                 for j=1:10
-                    if (i==idx(j))               
+                    if (i==CH_idx(j))               
                     countCHs=countCHs+1; 
                     CH(countCHs).id=i; %#ok                
-                    Sensors(i).type='C';
                     end
                 end    
             end   

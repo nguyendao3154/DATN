@@ -27,4 +27,3 @@ Delta_weight = Delta_score/(Alpha_score+Beta_score+Delta_score);
 
 Prey_pos = (Alpha_weight.*Alpha_pos) + (Beta_weight.*Beta_pos) + (Delta_weight.*Delta_pos); %Calculate the initial position of prey according to Equation 5
  
- a = 0.2;

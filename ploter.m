@@ -35,7 +35,7 @@ function deadNum=ploter(Sensors,Model)
             
             XL=[Sensors(i).xd ,Sensors(Sensors(i).MCH).xd];
             YL=[Sensors(i).yd ,Sensors(Sensors(i).MCH).yd];
-            % hold on
+            hold on
             line(XL,YL)
         
         end
@@ -52,7 +52,7 @@ function deadNum=ploter(Sensors,Model)
 
         XB=[Sensors(n+1).xd ,Sensors(Sensors(i).MCH).xd];
         YB=[Sensors(n+1).yd ,Sensors(Sensors(i).MCH).yd];
-        % hold on
+        hold on
         line(XB,YB)
 
     end

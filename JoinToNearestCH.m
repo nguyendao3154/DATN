@@ -1,4 +1,4 @@
-function Sensors=JoinToNearestCH(Sensors,Model,TotalCH)
+function [TotalCH,Sensors]=JoinToNearestCH(Sensors,Model,TotalCH)
 %% Origin file: Amin Nazari 
 %  Developed by: Nguyen Dao  -   DHBKHN
 
@@ -6,6 +6,11 @@ n=Model.n;
 m=length(TotalCH);
 if(m>0)
     D=zeros(m,n);  
+
+    for i = 1:n 
+        Sensors(i).countMem = 1;
+    end
+
     for i=1:n     
         for j=1:m
             % D la khoang cach tu Cluster den cac node
@@ -39,7 +44,24 @@ if(m>0)
         end
         
     end
-end
+
+    for i=1:n 
+        for j = 1:n 
+            if (Sensors(i).MCH == j)
+                Sensors(j).countMem = Sensors(j).countMem+1;
+            end
+        end
+    end
+
+    for i = 1:n 
+        if(Sensors(i).countMem > 3)
+            Sensors(i).type = 'C';
+
+       
+        else 
+            Sensors(i).type = 'N';
+        end
+    end
 
 end
 
