@@ -10,16 +10,11 @@ function [CH,Sensors]=ReSelectCH(Sensors,Model)
      
      for i=1:1:n
          if(Sensors(i).E>0)          
-             temp_rand=rand;     
-             if (Sensors(i).G<=0)            
-                 %Election of Cluster Heads  
-                 % if(i == minF2)    
-                 if (Sensors(i).type=='C')
-                                   
-                     countCHs=countCHs+1; 
-                     CH(countCHs).id=i; %#ok                
-                     
-                 end    
-             end   
+            %Election of Cluster Heads  
+            if (Sensors(i).type=='C')
+
+                countCHs=countCHs+1; 
+                CH(countCHs).id=i; %#ok                                 
+            end     
          end 
      end 

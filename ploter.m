@@ -16,7 +16,8 @@ function deadNum=ploter(Sensors,Model)
             
         else
             deadNum=deadNum+1;
-            plot(Sensors(i).xd,Sensors(i).yd,'red .');
+            plot(Sensors(i).xd,Sensors(i).yd,'red .','MarkerSize',10);
+            Sensors(i).type='D'
         end
         
         hold on;
@@ -49,12 +50,12 @@ function deadNum=ploter(Sensors,Model)
         %     line(XA,YA)
 
         % end
-
-        XB=[Sensors(n+1).xd ,Sensors(Sensors(i).MCH).xd];
-        YB=[Sensors(n+1).yd ,Sensors(Sensors(i).MCH).yd];
-        hold on
-        line(XB,YB)
-
+        if (Sensors(i).E>0)
+            XB=[Sensors(n+1).xd ,Sensors(Sensors(i).MCH).xd];
+            YB=[Sensors(n+1).yd ,Sensors(Sensors(i).MCH).yd];
+            hold on
+            line(XB,YB)
+        end
     end
 
 end

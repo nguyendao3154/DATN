@@ -1,4 +1,4 @@
-function [TotalCH,Sensors]=JoinToNearestCH(Sensors,Model,TotalCH)
+function [Sensors]=JoinToNearestCH(Sensors,Model,TotalCH)
 %% Origin file: Amin Nazari 
 %  Developed by: Nguyen Dao  -   DHBKHN
 
@@ -9,6 +9,11 @@ if(m>0)
 
     for i = 1:n 
         Sensors(i).countMem = 1;
+        if(Sensors(i).E > 0)
+            Sensors(i).type = 'N';
+        else 
+            Sensors(i).type = 'D';
+        end
     end
 
     for i=1:n     
@@ -38,7 +43,7 @@ if(m>0)
                     Sensors(i).dis2ch=Dmin(i);
                 end
             % else
-            %     Sensors(i).MCH=n+1;
+            %     Sensors(i).MCH=n+1;   
             %     Sensors(i).dis2ch=Sensors(i).dis2sink;
             % end
         end
@@ -54,12 +59,15 @@ if(m>0)
     end
 
     for i = 1:n 
-        if(Sensors(i).countMem > 3)
+        if (Sensors(i).E < 0 || Sensors(i).E == 0)
+            Sensors(i).type = 'D';
+        else
+            if(Sensors(i).countMem > 3)
             Sensors(i).type = 'C';
-
        
-        else 
+            else 
             Sensors(i).type = 'N';
+            end
         end
     end
 

@@ -9,7 +9,7 @@ close all;
 warning off all;
 tic;
 global srp rrp sdp rdp r a Max_iter CH_idx
-Max_iter=10; % Maximum numbef of iterations
+Max_iter=50; % Maximum numbef of iterations
 
 %% Create sensor nodes, Set Parameters and Create Energy Model 
 %%%%%%%%%%%%%%%%%%%%%%%%% Initial Parameters %%%%%%%%%%%%%%%%%%%%%%%
@@ -49,18 +49,8 @@ rrp=0;          %counter number of receive routing packets
 sdp=0;          %counter number of sent data packets 
 rdp=0;          %counter number of receive data packets 
 
-%Sink broadcast start message to all nodes
-Sender=n+1;     %Sink
-Receiver=1:n;   %All nodes
-Sensors=SendReceivePackets(Sensors,Model,Sender,'Hello',Receiver);
-
 % All sensor send location information to Sink .
 [Sensors,minToSink,maxToSink]=disToSink(Sensors,Model);
- 
-
-Sender=1:n;     %All nodes
-Receiver=n+1;   %Sink
-Sensors=SendReceivePackets(Sensors,Model,Sender,'Hello',Receiver);
 
 %Save metrics
 SRP(1)=srp;
@@ -68,22 +58,9 @@ RRP(1)=rrp;
 SDP(1)=sdp;
 RDP(1)=rdp;
 
-% Select initial cluster head
-[Sensors,AlphaWolf,BetaWolf,DeltaWolf] = InitialClustersFitness(Sensors, Model, minToSink, maxToSink);
-           
-
-% Initialize GWO parameters
-[Positions,Alpha_pos,Beta_pos,Delta_pos,Prey_pos] =  InitialGWO(Sensors,AlphaWolf,BetaWolf,DeltaWolf,n,ub,lb);
 pause(0.001)    %pause simulation
 hold off;       %clear figure
-% Selection Candidate Cluster Head Based on LEACH Set-up Phase
-[TotalCH,Sensors]=SelectCH(Sensors,Model); 
-%Sensors join to nearest CH 
-[TotalCH,Sensors]=JoinToNearestCH(Sensors,Model,TotalCH);
-%Reselect CH
-[TotalCH,Sensors]=ReSelectCH(Sensors,Model); 
-%Sensors join to nearest CH 
-[TotalCH,Sensors]=JoinToNearestCH(Sensors,Model,TotalCH);
+
  %Plot sensors
 ploter(Sensors,Model);       
 % Main loop program
@@ -103,87 +80,47 @@ for r=1:1:Model.rmax
     RRP(r+1)=rrp;  
     SDP(r+1)=sdp;
     RDP(r+1)=rdp;   
-    pause(0.001)    %pause simulation
+    pause(0.0001)    %pause simulation
     hold off;       %clear figure
-    
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    Sensors=resetSensors(Sensors,Model);
-    %allow to sensor to become cluster-head. LEACH Algorithm    
-    AroundClear=10;
-    if(mod(r,AroundClear)==0) 
-        for i=1:1:n
-            Sensors(i).G=0;
-        end
-    end
+    currentDeadNum = deadNum; 
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% plot sensors %%%%%%%%%%%%%%%%%%%%%%%
-    % deadNum=ploter(Sensors,Model);
+    deadNum=ploter(Sensors,Model);
     
     %Save r'th period When the first node dies
     if (deadNum>=1)
         if(flag_first_dead==0)
             first_dead=r;
             flag_first_dead=1;
+            pause(0.0001);
         end
     end
-    [Convergence_curve,Sensors,minF2,Alpha_pos,Beta_pos,Delta_pos,Prey_pos]=GWO(n,Max_iter,lb,ub,Sensors,Model);
-%%%%%%%%%%%%%%%%%%%%%% cluster head election %%%%%%%%%%%%%%%%%%%
-    % Selection Candidate Cluster Head Based on LEACH Set-up Phase
-    [TotalCH,Sensors]=SelectCH(Sensors,Model); 
-    
-        %Sensors join to nearest CH 
-    Sensors=JoinToNearestCH(Sensors,Model,TotalCH);
-    
-%%%%%%%%%%%%%%%%%%%%%%% end of cluster head election phase %%%%%%
-ploter(Sensors,Model);                  %Plot sensorss
-    %Broadcasting CHs to All Sensor that are in Radio Rage CH.
-    for i=1:length(TotalCH)
-        
-        Sender=TotalCH(i).id;
-        SenderRR=Model.RR;
-        Receiver=findReceiver(Sensors,Model,Sender,SenderRR);
-        Sensors=SendReceivePackets(Sensors,Model,Sender,'Hello',Receiver);
-            
-    end 
-    
-    
+    % Select initial cluster head
+[Sensors,AlphaWolf,BetaWolf,DeltaWolf] = InitialClustersFitness(Sensors, Model, minToSink, maxToSink);
+           
+% Initialize GWO parameters
+[Positions,Alpha_pos,Beta_pos,Delta_pos,Prey_pos] =  InitialGWO(Sensors,AlphaWolf,BetaWolf,DeltaWolf,n,ub,lb);
+[TotalCH,Sensors]=SelectCH(Sensors,Model,CH_idx); 
+%Sensors join to nearest CH 
+[Sensors]=JoinToNearestCH(Sensors,Model,TotalCH);
+%Reselect CH
+[TotalCH,Sensors]=ReSelectCH(Sensors,Model); 
+%Sensors join to nearest CH 
+[Sensors]=JoinToNearestCH(Sensors,Model,TotalCH);
+
+[Model, d_tch, d_tbs] = CalculateOptimalSet(Model, Sensors);
+[Model,Sensors,minF2,Alpha_pos,Beta_pos,Delta_pos,Prey_pos,TotalCH]=GWO(n,Max_iter,lb,ub,Sensors,Model,TotalCH);
+
+% ploter(Sensors,Model);                  %Plot sensorss
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% steady-state phase %%%%%%%%%%%%%%%%%
-    NumPacket=Model.NumPacket;
-    for i=1:1:1%NumPacket 
-        
-        %Plotter     
-        deadNum=ploter(Sensors,Model);
-        
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% All sensor send data packet to  CH 
-        for j=1:length(TotalCH)
-            
-            Receiver=TotalCH(j).id;
-            Sender=findSender(Sensors,Model,Receiver); 
-            Sensors=SendReceivePackets(Sensors,Model,Sender,'Data',Receiver);
-            
-        end
+[Sensors] = EnergyCalculate(Sensors, Model, n);
+
+    if(deadNum > currentDeadNum)
+        Model.F3 = 0;
         
     end
     
-    
-%%%%%%%%%%%% send Data packet from CH to Sink after Data aggregation
-    for i=1:length(TotalCH)
-            
-        Receiver=n+1;               %Sink
-        Sender=TotalCH(i).id;       %CH 
-        Sensors=SendReceivePackets(Sensors,Model,Sender,'Data',Receiver);
-            
-    end
-%%% send data packet directly from other nodes(that aren't in each cluster) to Sink
-    for i=1:n
-        if(Sensors(i).MCH==Sensors(n+1).id)
-            Receiver=n+1;               %Sink
-            Sender=Sensors(i).id;       %Other Nodes 
-            Sensors=SendReceivePackets(Sensors,Model,Sender,'Data',Receiver);
-        end
-    end
- 
    
 %% STATISTICS
      

@@ -3,6 +3,11 @@
 
 function [Sensors, AlphaWolf, BetaWolf, DeltaWolf] = InitialClustersFitness(Sensors, Model, minToSink, maxToSink)
     global CH_idx;
+    udpate_F1 = true;
+    for i=1:Model.n 
+        Sensors(i).F1 = 0;
+    end
+
 for i=1:Model.n 
     %Formula 12
     if(Sensors(i).E > 0)
@@ -13,11 +18,12 @@ for i=1:Model.n
         Sensors(i).F1 = 0;
     end
     
-    if (i == 1)
-        AlphaWolf = 1;
-        BetaWolf = 1;
-        DeltaWolf = 1;
-    else
+    if(udpate_F1 == true)
+        AlphaWolf = i;
+        BetaWolf = i
+        DeltaWolf = i
+        udpate_F1 = false;
+    end 
 
         if (Sensors(i).F1 > Sensors(AlphaWolf).F1)
             AlphaWolf = i;
@@ -31,7 +37,6 @@ for i=1:Model.n
             DeltaWolf = i;
         end
 
-    end
     C(i) = Sensors(i).F1;
 end
 [B, CH_idx] = maxk(C,10);
