@@ -4,6 +4,7 @@ function deadNum=ploter(Sensors,Model)
 %	0918 546 2272
     deadNum=0;
     n=Model.n;
+    hold off;       %clear figure
     for i=1:n
         %check dead node
         if (Sensors(i).E>0)
@@ -50,9 +51,9 @@ function deadNum=ploter(Sensors,Model)
         %     line(XA,YA)
 
         % end
-        if (Sensors(i).E>0)
-            XB=[Sensors(n+1).xd ,Sensors(Sensors(i).MCH).xd];
-            YB=[Sensors(n+1).yd ,Sensors(Sensors(i).MCH).yd];
+        if (Sensors(i).type=='C' && Sensors(i).E>0)
+            XB=[Sensors(n+1).xd ,Sensors(i).xd];
+            YB=[Sensors(n+1).yd ,Sensors(i).yd];
             hold on
             line(XB,YB)
         end

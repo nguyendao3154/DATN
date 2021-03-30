@@ -50,6 +50,9 @@ NumPacket=10;
 %Redio Range
 RR=0.5*Area.x*sqrt(2);
 
+%Number of clusters
+NumOfClusters = 10;
+
 %Weight
 a1 = 0.2;
 a2 = 0.2;
@@ -77,5 +80,5 @@ Model.a1=a1;
 Model.a2=a2;
 Model.a3=a3;
 Model.F3=0;
-
+Model.NumOfClusters=NumOfClusters; 
 end

@@ -19,7 +19,7 @@ lb = 1;
 [Area,Model]=setParameters(n);     		%Set Parameters Sensors and Network
 
 %%%%%%%%%%%%%%%%%%%%%%%%% configuration Sensors %%%%%%%%%%%%%%%%%%%%
-CreateRandomSen(Model,Area);            %Create a random scenario
+%CreateRandomSen(Model,Area);            %Create a random scenario
 load Locations                          %Load sensor Location
 Sensors=ConfigureSensors(Model,n,X,Y);
 % Sensors=ConfigureSensors(Model,n,Area.x,Area.y);
@@ -100,14 +100,12 @@ for r=1:1:Model.rmax
            
 % Initialize GWO parameters
 [Positions,Alpha_pos,Beta_pos,Delta_pos,Prey_pos] =  InitialGWO(Sensors,AlphaWolf,BetaWolf,DeltaWolf,n,ub,lb);
-[TotalCH,Sensors]=SelectCH(Sensors,Model,CH_idx); 
-%Sensors join to nearest CH 
-[Sensors]=JoinToNearestCH(Sensors,Model,TotalCH);
-%Reselect CH
-[TotalCH,Sensors]=ReSelectCH(Sensors,Model); 
-%Sensors join to nearest CH 
-[Sensors]=JoinToNearestCH(Sensors,Model,TotalCH);
-
+[TotalCH,Sensors] = FormCluster(Sensors,Model,CH_idx)
+% [TotalCH,Sensors]=SelectCH(Sensors,Model,CH_idx);
+%             [Sensors]=JoinToNearestCH(Sensors,Model,TotalCH);
+%             [TotalCH,Sensors]=ReSelectCH(Sensors,Model);
+%             [Sensors]=JoinToNearestCH(Sensors,Model,TotalCH);
+ploter(Sensors,Model);
 [Model, d_tch, d_tbs] = CalculateOptimalSet(Model, Sensors);
 [Model,Sensors,minF2,Alpha_pos,Beta_pos,Delta_pos,Prey_pos,TotalCH]=GWO(n,Max_iter,lb,ub,Sensors,Model,TotalCH);
 

@@ -146,19 +146,20 @@ function [Model,Sensors,minF2,Alpha_pos,Beta_pos,Delta_pos,Prey_pos,TotalCH]=GWO
         end
 
         [B, CH_idx] = mink(C,10);
-
-        [TempCH,Wolf]=SelectCH(Wolf,Model,CH_idx);
-        [Wolf]=JoinToNearestCH(Wolf,Model,TempCH);
-        [TempCH,Wolf]=ReSelectCH(Wolf,Model);
-        [Wolf]=JoinToNearestCH(Wolf,Model,TempCH);
+        [TempCH,Wolf] = FormCluster(Wolf,Model,CH_idx);
+        % [TempCH,Wolf]=SelectCH(Wolf,Model,CH_idx);
+        % [Wolf]=JoinToNearestCH(Wolf,Model,TempCH);
+        % [TempCH,Wolf]=ReSelectCH(Wolf,Model);
+        % [Wolf]=JoinToNearestCH(Wolf,Model,TempCH);
         
         [Model, d_tch, d_tbs, update_cluster_flag] = CalculateOptimalSet(Model, Wolf);
 
        if(update_cluster_flag == true)
-            [TotalCH,Sensors]=SelectCH(Sensors,Model,CH_idx);
-            [Sensors]=JoinToNearestCH(Sensors,Model,TotalCH);
-            [TotalCH,Sensors]=ReSelectCH(Sensors,Model);
-            [Sensors]=JoinToNearestCH(Sensors,Model,TotalCH);
+            [TotalCH,Sensors] = FormCluster(Sensors,Model,CH_idx);
+            % [TotalCH,Sensors]=SelectCH(Sensors,Model,CH_idx);
+            % [Sensors]=JoinToNearestCH(Sensors,Model,TotalCH);
+            % [TotalCH,Sensors]=ReSelectCH(Sensors,Model);
+            % [Sensors]=JoinToNearestCH(Sensors,Model,TotalCH);
             update_cluster_flag = false;
        end
 
