@@ -39,4 +39,4 @@ for i=1:Model.n
 
     C(i) = Sensors(i).F1;
 end
-[B, CH_idx] = maxk(C,10);
+[B, CH_idx] = maxk(C,20);

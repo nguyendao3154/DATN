@@ -8,12 +8,12 @@ function [CH,Sensors] = FormCluster(Sensors,Model,CH_idx)
     countCHs=0;
     countTempCHs=0;
     n=Model.n;
-    k = 1;
+    %k = 1;
 
     % while (countCHs < Model.NumOfClusters && k < Model.n)
     %     CH1(countCHs+1).id = CH_idx(k);
         
-        for i =1:10
+        for i =1:20
             CH1(i).id = CH_idx(i);
         end
         m=length(CH1);

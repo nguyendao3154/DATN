@@ -19,7 +19,7 @@ lb = 1;
 [Area,Model]=setParameters(n);     		%Set Parameters Sensors and Network
 
 %%%%%%%%%%%%%%%%%%%%%%%%% configuration Sensors %%%%%%%%%%%%%%%%%%%%
-%CreateRandomSen(Model,Area);            %Create a random scenario
+CreateRandomSen(Model,Area);            %Create a random scenario
 load Locations                          %Load sensor Location
 Sensors=ConfigureSensors(Model,n,X,Y);
 % Sensors=ConfigureSensors(Model,n,Area.x,Area.y);

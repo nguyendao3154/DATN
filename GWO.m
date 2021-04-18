@@ -129,8 +129,8 @@ function [Model,Sensors,minF2,Alpha_pos,Beta_pos,Delta_pos,Prey_pos,TotalCH]=GWO
         for i = 1:n
             % Calculate fitness F2
             if (Wolf(i).E > 0)
-                % Wolf(i).F2 = Model.a2*(Model.Eo-Wolf(i).E)/(Wolf(maxEnergy).E - Wolf(minEnergy).E) + ...
-                Wolf(i).F2 =(1-Model.a2)*(Wolf(i).dis2prey-Wolf(minToPrey).dis2prey)/(Wolf(maxToPrey).dis2prey-Wolf(minToPrey).dis2prey);
+                Wolf(i).F2 = Model.a2*(Model.Eo-Wolf(i).E)/(Wolf(maxEnergy).E - Wolf(minEnergy).E) + ...
+                (1-Model.a2)*(Wolf(i).dis2prey-Wolf(minToPrey).dis2prey)/(Wolf(maxToPrey).dis2prey-Wolf(minToPrey).dis2prey);
 
                 % Get the smallest F2
                 if(update_min_F2 == true)
@@ -145,7 +145,7 @@ function [Model,Sensors,minF2,Alpha_pos,Beta_pos,Delta_pos,Prey_pos,TotalCH]=GWO
             end
         end
 
-        [B, CH_idx] = mink(C,10);
+        [B, CH_idx] = mink(C,20);
         [TempCH,Wolf] = FormCluster(Wolf,Model,CH_idx);
         % [TempCH,Wolf]=SelectCH(Wolf,Model,CH_idx);
         % [Wolf]=JoinToNearestCH(Wolf,Model,TempCH);
