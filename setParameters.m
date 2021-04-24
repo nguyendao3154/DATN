@@ -18,7 +18,7 @@ p=0.1;
 
 %%%%%%%%%%%%%%%%%%%%%%%%% Energy Model (all values in Joules)%%%%%%%%%%%
 %Initial Energy 
-Eo=0.01;
+Eo=0.05;
 
 %Eelec=Etx=Erx
 ETX=50*0.000000001;
@@ -36,7 +36,7 @@ do=sqrt(Efs/Emp);
 
 %%%%%%%%%%%%%%%%%%%%%%%%% Run Time Parameters %%%%%%%%%%%%%%%%%%%%%%%%%
 %maximum number of rounds
-rmax=100;
+rmax=200;
 
 %Data packet size
 DpacketLen=4000;

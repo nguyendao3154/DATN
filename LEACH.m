@@ -19,7 +19,7 @@ lb = 1;
 [Area,Model]=setParameters(n);     		%Set Parameters Sensors and Network
 
 %%%%%%%%%%%%%%%%%%%%%%%%% configuration Sensors %%%%%%%%%%%%%%%%%%%%
-CreateRandomSen(Model,Area);            %Create a random scenario
+%CreateRandomSen(Model,Area);            %Create a random scenario
 load Locations                          %Load sensor Location
 Sensors=ConfigureSensors(Model,n,X,Y);
 % Sensors=ConfigureSensors(Model,n,Area.x,Area.y);
@@ -49,6 +49,9 @@ rrp=0;          %counter number of receive routing packets
 sdp=0;          %counter number of sent data packets 
 rdp=0;          %counter number of receive data packets 
 
+%Calculate Initial energy
+TotalEnergy(1) = initEnergy;
+
 % All sensor send location information to Sink .
 [Sensors,minToSink,maxToSink]=disToSink(Sensors,Model);
 
@@ -58,11 +61,11 @@ RRP(1)=rrp;
 SDP(1)=sdp;
 RDP(1)=rdp;
 
-pause(0.001)    %pause simulation
+% pause(0.001)    %pause simulation
 hold off;       %clear figure
 
  %Plot sensors
-ploter(Sensors,Model);       
+% ploter(Sensors,Model);       
 % Main loop program
 for r=1:1:Model.rmax
 
@@ -80,12 +83,12 @@ for r=1:1:Model.rmax
     RRP(r+1)=rrp;  
     SDP(r+1)=sdp;
     RDP(r+1)=rdp;   
-    pause(0.0001)    %pause simulation
+    % pause(0.0001)    %pause simulation
     hold off;       %clear figure
     currentDeadNum = deadNum; 
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% plot sensors %%%%%%%%%%%%%%%%%%%%%%%
-    deadNum=ploter(Sensors,Model);
+     deadNum=ploter(Sensors,Model);
     
     %Save r'th period When the first node dies
     if (deadNum>=1)
@@ -105,11 +108,11 @@ for r=1:1:Model.rmax
 %             [Sensors]=JoinToNearestCH(Sensors,Model,TotalCH);
 %             [TotalCH,Sensors]=ReSelectCH(Sensors,Model);
 %             [Sensors]=JoinToNearestCH(Sensors,Model,TotalCH);
-ploter(Sensors,Model);
+% ploter(Sensors,Model);
 [Model, d_tch, d_tbs] = CalculateOptimalSet(Model, Sensors);
 [Model,Sensors,minF2,Alpha_pos,Beta_pos,Delta_pos,Prey_pos,TotalCH]=GWO(n,Max_iter,lb,ub,Sensors,Model,TotalCH);
 
-% ploter(Sensors,Model);                  %Plot sensorss
+ploter(Sensors,Model);                  %Plot sensorss
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% steady-state phase %%%%%%%%%%%%%%%%%
 [Sensors] = EnergyCalculate(Sensors, Model, n);
@@ -119,7 +122,10 @@ ploter(Sensors,Model);
         
     end
     
-   
+TotalEnergy(r+1) = 0;
+for i=1:Model.n
+TotalEnergy(r+1) = TotalEnergy(r+1) + Sensors(i).E;   
+end
 %% STATISTICS
      
     Sum_DEAD(r+1)=deadNum;
@@ -148,16 +154,20 @@ ploter(Sensors,Model);
     ConsumEnergy(r+1)=(initEnergy-SumEnergyAllSensor(r+1))/n; %#ok
     
     En=0;
+    deadNum = 0;
     for i=1:n
         if Sensors(i).E>0
             En=En+(Sensors(i).E-AvgEnergyAllSensor(r+1))^2;
+        else 
+            deadNum=deadNum+1;
         end
     end
     
     Enheraf(r+1)=En/alive; %#ok
     
     title(sprintf('Round=%d,Dead nodes=%d', r+1, deadNum)) 
-    
+%    plot(TotalEnergy); 
+   pause(0.00001);
    %dead
    if(n==deadNum)
        
