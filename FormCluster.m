@@ -13,7 +13,7 @@ function [CH,Sensors] = FormCluster(Sensors,Model,CH_idx)
     % while (countCHs < Model.NumOfClusters && k < Model.n)
     %     CH1(countCHs+1).id = CH_idx(k);
         
-        for i =1:20
+        for i =1:Model.NumOfClusters
             CH1(i).id = CH_idx(i);
         end
         m=length(CH1);
@@ -47,18 +47,18 @@ function [CH,Sensors] = FormCluster(Sensors,Model,CH_idx)
             for i=1:n       
                 if (Sensors(i).E>0)
                     %if node is in RR CH and is Nearer to CH rather than Sink
-                    % if (Dmin(i) <= Model.RR && Dmin(i)<Sensors(i).dis2sink )
-                        if (m==1)
-                            Sensors(i).MCH=CH1(1).id;
-                            Sensors(i).dis2ch=Dmin(i);
-                        else
+                    if (Dmin(i) <= Model.RR && Dmin(i)<Sensors(i).dis2sink )
+                        % if (m==1)
+                        %     Sensors(i).MCH=CH1(1).id;
+                        %     Sensors(i).dis2ch=Dmin(i);
+                        % else
                             Sensors(i).MCH=CH1(idx(i)).id;
                             Sensors(i).dis2ch=Dmin(i);
-                        end
-                    % else
-                    %     Sensors(i).MCH=n+1;   
-                    %     Sensors(i).dis2ch=Sensors(i).dis2sink;
-                    % end
+                        % end
+                    else
+                        Sensors(i).MCH=n+1;   
+                        Sensors(i).dis2ch=Sensors(i).dis2sink;
+                    end
                 end
             end
         
@@ -115,18 +115,18 @@ function [CH,Sensors] = FormCluster(Sensors,Model,CH_idx)
             for i=1:n       
                 if (Sensors(i).E>0)
                     %if node is in RR CH and is Nearer to CH rather than Sink
-                    % if (Dmin(i) <= Model.RR && Dmin(i)<Sensors(i).dis2sink )
-                        if (m==1)
-                            Sensors(i).MCH=CH2(1).id;
-                            Sensors(i).dis2ch=Dmin(i);
-                        else
+                    if (Dmin(i)<Sensors(i).dis2sink && length(CH2)~=1)
+                        % if (m==1)
+                        %     Sensors(i).MCH=CH2(1).id;
+                        %     Sensors(i).dis2ch=Dmin(i);
+                        % else
                             Sensors(i).MCH=CH2(idx(i)).id;
                             Sensors(i).dis2ch=Dmin(i);
-                        end
-                    % else
-                    %     Sensors(i).MCH=n+1;   
-                    %     Sensors(i).dis2ch=Sensors(i).dis2sink;
-                    % end
+                        % end
+                    else
+                        Sensors(i).MCH=n+1;   
+                        Sensors(i).dis2ch=Sensors(i).dis2sink;
+                    end
                 end
             end
         

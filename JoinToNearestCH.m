@@ -34,18 +34,18 @@ if(m>0)
     for i=1:n       
         if (Sensors(i).E>0)
             %if node is in RR CH and is Nearer to CH rather than Sink
-            % if (Dmin(i) <= Model.RR && Dmin(i)<Sensors(i).dis2sink )
-                if (m==1)
-                    Sensors(i).MCH=TotalCH(1).id;
-                    Sensors(i).dis2ch=Dmin(i);
-                else
+            if (Dmin(i) < Sensors(i).dis2sink )
+                % if (m==1)
+                %     Sensors(i).MCH=TotalCH(1).id;
+                %     Sensors(i).dis2ch=Dmin(i);
+                % else
                     Sensors(i).MCH=TotalCH(idx(i)).id;
                     Sensors(i).dis2ch=Dmin(i);
-                end
-            % else
-            %     Sensors(i).MCH=n+1;   
-            %     Sensors(i).dis2ch=Sensors(i).dis2sink;
-            % end
+                % end
+            else
+                Sensors(i).MCH=n+1;   
+                Sensors(i).dis2ch=Sensors(i).dis2sink;
+            end
         end
         
     end

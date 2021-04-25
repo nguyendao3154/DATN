@@ -11,6 +11,10 @@ function [Model,Sensors,minF2,Alpha_pos,Beta_pos,Delta_pos,Prey_pos,TotalCH]=GWO
         Wolf(i).F2 = inf;
         C(i) = inf;
     end
+    for i = 1:n
+        Wolf(i).dis2sink=sqrt((Wolf(i).xd-Wolf(n+1).xd)^2 + ...
+        (Wolf(i).yd-Wolf(n+1).yd)^2 );
+    end
     a = 2;
     for iter_gwo = 1:Max_iter % t < Max number of iterations
 

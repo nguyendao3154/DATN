@@ -61,7 +61,7 @@ RRP(1)=rrp;
 SDP(1)=sdp;
 RDP(1)=rdp;
 
-% pause(0.001)    %pause simulation
+pause(0.001)    %pause simulation
 hold off;       %clear figure
 
  %Plot sensors
@@ -83,12 +83,12 @@ for r=1:1:Model.rmax
     RRP(r+1)=rrp;  
     SDP(r+1)=sdp;
     RDP(r+1)=rdp;   
-    % pause(0.0001)    %pause simulation
+    pause(0.0001)    %pause simulation
     hold off;       %clear figure
     currentDeadNum = deadNum; 
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% plot sensors %%%%%%%%%%%%%%%%%%%%%%%
-     deadNum=ploter(Sensors,Model);
+    %  deadNum=ploter(Sensors,Model);
     
     %Save r'th period When the first node dies
     if (deadNum>=1)
@@ -112,7 +112,7 @@ for r=1:1:Model.rmax
 [Model, d_tch, d_tbs] = CalculateOptimalSet(Model, Sensors);
 [Model,Sensors,minF2,Alpha_pos,Beta_pos,Delta_pos,Prey_pos,TotalCH]=GWO(n,Max_iter,lb,ub,Sensors,Model,TotalCH);
 
-ploter(Sensors,Model);                  %Plot sensorss
+% ploter(Sensors,Model);                  %Plot sensorss
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% steady-state phase %%%%%%%%%%%%%%%%%
 [Sensors] = EnergyCalculate(Sensors, Model, n);
@@ -165,8 +165,12 @@ end
     
     Enheraf(r+1)=En/alive; %#ok
     
-    title(sprintf('Round=%d,Dead nodes=%d', r+1, deadNum)) 
-%    plot(TotalEnergy); 
+    % title(sprintf('Round=%d,Dead nodes=%d', r+1, deadNum)) 
+    xlabel('Rounds')
+    ylabel('Energy')
+
+   plot(AliveSensors); 
+   title(sprintf('Alive nodes'))
    pause(0.00001);
    %dead
    if(n==deadNum)
