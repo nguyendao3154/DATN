@@ -166,11 +166,9 @@ end
     Enheraf(r+1)=En/alive; %#ok
     
     % title(sprintf('Round=%d,Dead nodes=%d', r+1, deadNum)) 
-    xlabel('Rounds')
-    ylabel('Energy')
 
-   plot(AliveSensors); 
-   title(sprintf('Alive nodes'))
+   plot(TotalEnergy); 
+%    title(sprintf('Alive nodes'))
    pause(0.00001);
    %dead
    if(n==deadNum)
@@ -185,7 +183,7 @@ end % for r=0:1:rmax
 disp('End of Simulation');
 toc;
 disp('Create Report...')
-
+saveas(gcf,'GWOenergy.fig');
 filename=sprintf('leach%d.mat',n);
 
 % Save Report

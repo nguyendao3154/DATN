@@ -36,7 +36,7 @@ do=sqrt(Efs/Emp);
 
 %%%%%%%%%%%%%%%%%%%%%%%%% Run Time Parameters %%%%%%%%%%%%%%%%%%%%%%%%%
 %maximum number of rounds
-rmax=250;
+rmax=500;
 
 %Data packet size
 DpacketLen=4000;
