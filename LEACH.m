@@ -27,6 +27,9 @@ Sensors=ConfigureSensors(Model,n,X,Y);
 %%%%%%%%%%%%%%%%%%%%%%%%% Parameters initialization %%%%%%%%%%%%%%%%
 countCHs=0;         %counter for CHs
 flag_first_dead=0;  %flag_first_dead
+flag_50_dead=0;  %flag_50_dead
+flag_90_dead=0;  %flag_90_dead
+flag_all_dead=0;  %flag_100_dead
 deadNum=0;          %Number of dead nodes
 
 initEnergy=0;       %Initial Energy
@@ -93,10 +96,23 @@ for r=1:1:Model.rmax
     %Save r'th period When the first node dies
     if (deadNum>=1)
         if(flag_first_dead==0)
+            dead_round(1)=r;
             first_dead=r;
             flag_first_dead=1;
             pause(0.0001);
         end
+    end
+    if(deadNum>=50)    
+        if(flag_50_dead==0)
+            dead_round(2)=r;
+            flag_50_dead=1;
+        end  
+    end
+    if(deadNum>=90)    
+        if(flag_90_dead==0)
+            dead_round(3)=r;
+            flag_90_dead=1;
+        end  
     end
     % Select initial cluster head
 [Sensors,AlphaWolf,BetaWolf,DeltaWolf] = InitialClustersFitness(Sensors, Model, minToSink, maxToSink);
@@ -172,14 +188,15 @@ end
    pause(0.00001);
    %dead
    if(n==deadNum)
-       
+        dead_round(4)=r;
        lastPeriod=r;  
        break;
        
    end
  
 end % for r=0:1:rmax
-
+bar(dead_round);
+save('GWOdeadround.mat','dead_round');
 disp('End of Simulation');
 toc;
 disp('Create Report...')
