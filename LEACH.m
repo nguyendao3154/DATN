@@ -182,8 +182,8 @@ end
     Enheraf(r+1)=En/alive; %#ok
     
     % title(sprintf('Round=%d,Dead nodes=%d', r+1, deadNum)) 
-    plot(AliveSensors); 
-%    plot(TotalEnergy); 
+%    plot(AliveSensors); 
+    plot(TotalEnergy); 
 %    title(sprintf('Alive nodes'))
    pause(0.00001);
    %dead
@@ -200,5 +200,5 @@ end % for r=0:1:rmax
 disp('End of Simulation');
 toc;
 disp('Create Report...')
-% saveas(gcf,'GWOenergy.fig');
-saveas(gcf,'GWO_Alivenodes.fig');
+ saveas(gcf,'GWOenergy.fig');
+%saveas(gcf,'GWO_Alivenodes.fig');

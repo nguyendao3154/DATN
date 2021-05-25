@@ -16,24 +16,25 @@ EmptySensor.MCH=n+1;    %Member of CH
 advanced=n*0.1;
 %% Configuration Sensors
 Sensors=repmat(EmptySensor,n,1);
-for i=1:1:advanced
-    %set x location
-    Sensors(i).xd=GX(i); 
-    %set y location
-    Sensors(i).yd=GY(i);
-    %Determinate whether in previous periods has been clusterhead or not? not=0 and be=n
-    Sensors(i).G=0;
-    %dead flag. Whether dead or alive S(i).df=0 alive. S(i).df=1 dead.
-    Sensors(i).df=0; 
-    %initially there are not each cluster heads 
-    Sensors(i).type='N';
-    %initially all nodes have equal Energy
-    Sensors(i).E=2*Model.Eo;
-    %id
-    Sensors(i).id=i;
-    %Sensors(i).RR=Model.RR;
-end
-for i=advanced:1:n
+% for i=1:1:advanced
+%     %set x location
+%     Sensors(i).xd=GX(i); 
+%     %set y location
+%     Sensors(i).yd=GY(i);
+%     %Determinate whether in previous periods has been clusterhead or not? not=0 and be=n
+%     Sensors(i).G=0;
+%     %dead flag. Whether dead or alive S(i).df=0 alive. S(i).df=1 dead.
+%     Sensors(i).df=0; 
+%     %initially there are not each cluster heads 
+%     Sensors(i).type='N';
+%     %initially all nodes have equal Energy
+%     Sensors(i).E=2*Model.Eo;
+%     %id
+%     Sensors(i).id=i;
+%     %Sensors(i).RR=Model.RR;
+% end
+% for i=advanced:1:n
+for i=1:n
     %set x location
     Sensors(i).xd=GX(i); 
     %set y location
