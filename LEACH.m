@@ -183,7 +183,7 @@ end
     
     % title(sprintf('Round=%d,Dead nodes=%d', r+1, deadNum)) 
 %    plot(AliveSensors); 
-    plot(TotalEnergy); 
+    %plot(TotalEnergy); 
 %    title(sprintf('Alive nodes'))
    pause(0.00001);
    %dead
@@ -196,9 +196,13 @@ end
  
 end % for r=0:1:rmax
 %bar(dead_round);
-%save('GWOdeadround.mat','dead_round');
+save('GWOdeadround.mat','dead_round');
 disp('End of Simulation');
 toc;
-disp('Create Report...')
- saveas(gcf,'GWOenergy.fig');
-%saveas(gcf,'GWO_Alivenodes.fig');
+disp('Create Report...');
+close all;
+plot(TotalEnergy);
+saveas(gcf,'GWOenergy.fig');
+close all;
+plot(AliveSensors); 
+saveas(gcf,'GWO_Alivenodes.fig');
